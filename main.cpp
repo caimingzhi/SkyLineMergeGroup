@@ -131,6 +131,7 @@ int main() {
 //    auto allMessage = calcWaste3( myPool, individualGroup[1] );
 
 //
+
     auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
     cout << " 指针所指对象的大小为： " << sizeof( *allMessage.allGroup ) << endl;
     cout << " 指针的大小为： " << sizeof( allMessage.allGroup ) << endl;
