@@ -39,6 +39,7 @@ void getList( vector<list<int>> & thisList )
     for (int i = 0; i < thisList.size(); ++i) {
         theV.emplace_back( i );
     }
+    
 
     random_device rd;
     mt19937 gen( rd() );
@@ -64,7 +65,7 @@ int main() {
 //        ModeSet thisSet1(7 );
 //        totall += thisSet1.modeSet.size();
 //    }
-
+    cout << "this message was changed from github" << endl;
 //    cout << totall << endl;
 //    cout << totall1 << endl;
 //    cout << static_cast<double > (totall/totall1) << endl;
