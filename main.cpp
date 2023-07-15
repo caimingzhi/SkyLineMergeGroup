@@ -98,7 +98,7 @@ int main() {
 //        countNum[numCount]++;
     }
     cout << " 面积大于175000的个数为： " << ii << endl;
-
+    cout << " Hello " << endl;
 /*
 //    myPool.indentPool[1].getWidth();
 //    myPool.indentPool[1].getHeight();
@@ -131,6 +131,7 @@ int main() {
 //    auto allMessage = calcWaste3( myPool, individualGroup[1] );
 
 //
+
     auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
     cout << " 指针所指对象的大小为： " << sizeof( *allMessage.allGroup ) << endl;
     cout << " 指针的大小为： " << sizeof( allMessage.allGroup ) << endl;
