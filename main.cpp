@@ -65,7 +65,7 @@ int main() {
 //        ModeSet thisSet1(7 );
 //        totall += thisSet1.modeSet.size();
 //    }
-    cout << "this message was changed from github" << endl;
+//    cout << "this message was changed from github" << endl;
 //    cout << totall << endl;
 //    cout << totall1 << endl;
 //    cout << static_cast<double > (totall/totall1) << endl;
