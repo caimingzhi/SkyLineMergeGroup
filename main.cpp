@@ -39,6 +39,7 @@ void getList( vector<list<int>> & thisList )
     for (int i = 0; i < thisList.size(); ++i) {
         theV.emplace_back( i );
     }
+    
 
     random_device rd;
     mt19937 gen( rd() );
