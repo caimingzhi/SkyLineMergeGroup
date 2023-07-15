@@ -73,6 +73,7 @@ int main() {
     int seed = 1235;
     vector<list<int>> individualGroup( individualSize );
 
+
     vector<vector<int>> individualVector;
 
     getFirstGeneration( individualGroup, individualVector, baseSize, seed );
