@@ -74,7 +74,6 @@ int main() {
     int seed = 1235;
     vector<list<int>> individualGroup( individualSize );
 
-
     vector<vector<int>> individualVector;
 
     getFirstGeneration( individualGroup, individualVector, baseSize, seed );
@@ -130,11 +129,8 @@ int main() {
      */
 
     auto tt01 = ::clock();
-//    auto allMessage = calcWaste3( myPool, individualGroup[1] );
-
-//
-
-    auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
+    auto allMessage = calcWaste3( myPool, individualGroup[1] );
+//    auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
     cout << " 指针所指对象的大小为： " << sizeof( *allMessage.allGroup ) << endl;
     cout << " 指针的大小为： " << sizeof( allMessage.allGroup ) << endl;
     double allWaste = allMessage.waste;
@@ -182,30 +178,31 @@ int main() {
     }*/
 
 
+/*
 
+    ThreadPool pool( 10 );
+    pool.init();
 
-//
-//    ThreadPool pool( 10 );
-//    pool.init();
-//
-//    auto t1 = ::clock();
-//    std::vector<std::future<double>> wasteP1( individualSize );
-//    std::vector<double> wasteP( individualSize );
-//    for (int i = 0; i < individualSize; ++i) {
+    auto t1 = ::clock();
+    std::vector<std::future<double>> wasteP1( individualSize );
+    std::vector<double> wasteP( individualSize );
+    for (int i = 0; i < individualSize; ++i) {
+        wasteP1[i] = pool.submit(calcWasteTryOtherWay, std::ref(myPool), std::ref(individualGroup[i]) );
 //        wasteP1[i] = pool.submit(calcWasteBeta, std::ref(myPool), std::ref(individualGroup[i]) );
-////        wasteP1[i] = pool.submit(calcWasteBeta, std::ref(myPool), std::ref(individualGroup[i]) );
-//    }
-//    for (int i = 0; i < individualSize; ++i) {
-//         wasteP[i]= wasteP1[i].get();
-//    }
-//
-//    for_each( wasteP.begin(), wasteP.end(), []( int a ) { cout << a << " "; } );
-//    auto t2 = ::clock();
-//    cout << endl << " the runing time of parent is  " <<  static_cast<double> ( t2 - t1 ) / CLOCKS_PER_SEC  << " seconds. " << endl;
-//
+    }
+    for (int i = 0; i < individualSize; ++i) {
+         wasteP[i]= wasteP1[i].get();
+    }
 
-    //    pool.shutdown();
+    for_each( wasteP.begin(), wasteP.end(), []( int a ) { cout << a << " "; } );
+    auto t2 = ::clock();
+    cout << endl << " the runing time of parent is  " <<  static_cast<double> ( t2 - t1 ) / CLOCKS_PER_SEC  << " seconds. " << endl;
 
+
+    pool.shutdown();
+*/
+
+/*
 
 //    cout << endl;
 //    auto t1=clock();
@@ -239,7 +236,6 @@ int main() {
 
 
 
-/*
 
     vector<double> cumPro = cum_probability( wasteP );
     vector<vector<int>> sonVector;

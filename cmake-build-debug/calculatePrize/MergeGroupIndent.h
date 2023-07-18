@@ -29,6 +29,7 @@ public:
     }
 
 };
+
 double calculateThisGroup( GroupIndent & theGroup );
 void plotfileClear()
 {
@@ -399,7 +400,7 @@ CountWaste calcWaste2( RectIndentPool & myPool , list<int> & firstGeneration )
 //        cout << " 这是第 " << index << " 组！！" << endl;
         iter = firstGeneration.begin();
 //        allGroup.push_back( thisGroup );
-        allGroup ->emplace_back( thisGroup );
+        allGroup -> emplace_back( thisGroup );
         auto  t2 = ::clock();
 //        cout << " the time of merging a group is : " << t2 - t1 << endl;
 //        cout << " the group size is : " <<  thisGroup.getSize() << endl;
@@ -414,10 +415,6 @@ CountWaste calcWaste2( RectIndentPool & myPool , list<int> & firstGeneration )
     for( auto & thisGroup : *allGroup )
     {
         index01++;
-        if ( index01 == 134 )
-        {
-            cout << endl;
-        }
         auto thefee = thisGroup.getLowestCostBeta();
         allWaste += thefee.first;
         generatGroup.emplace_back( thefee.second );
@@ -515,6 +512,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
 }
 
 CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGeneration )
+//double calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGeneration )
 {
     vector<vector<int>> generatGroup;
     vector<vector<int>> generatGroupNum;
@@ -564,6 +562,10 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
         }
         index++;
         auto t2 = ::clock();
+        if ( index == 95 )
+        {
+            cout << endl;
+        }
         cout << " 这是第 " << index << " 组！！" << endl;
         cout << " the time of merging a group is : " << t2 - t1 << endl;
         cout << " the group size is : " <<  thisGroup.getSize() << endl;
@@ -619,11 +621,11 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
     int index01 = 0;
     for( auto & thisGroup : *allGroup )
     {
-//        index01++;
-//        if ( index01 == 134 )
-//        {
-//            cout << endl;
-//        }
+        index01++;
+        if ( index01 == 95 )
+        {
+            cout << endl;
+        }
         auto thefee = thisGroup.getLowestCostBeta();
         allWaste += thefee.first;
         generatGroup.emplace_back( thefee.second );
@@ -636,6 +638,7 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
 
     CountWaste thisCountWaste( allWaste, generatGroup, generatGroupNum , allGroup);
 
+//    return  allWaste;
     return  thisCountWaste;
 
 }
