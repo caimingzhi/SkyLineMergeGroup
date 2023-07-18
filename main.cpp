@@ -129,8 +129,8 @@ int main() {
      */
 
     auto tt01 = ::clock();
-    auto allMessage = calcWaste3( myPool, individualGroup[1] );
-//    auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
+//    auto allMessage = calcWaste3( myPool, individualGroup[1] );
+    auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
     cout << endl << " 指针所指对象的大小为： " << sizeof( *allMessage.allGroup ) << endl;
     cout << " 指针的大小为： " << sizeof( allMessage.allGroup ) << endl;
     double allWaste = allMessage.waste;

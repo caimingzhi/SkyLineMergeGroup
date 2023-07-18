@@ -11,7 +11,7 @@
 #include <fstream>
 #define HORIZONTALSPACING 12
 #define VERTICALSPACING 15
-#define IND_MAX_WASTE 1000
+#define IND_MAX_WASTE 1
 #ifndef UNTITLED9_GROUPINDENT_H
 #define UNTITLED9_GROUPINDENT_H
 //class GroupIndent;
@@ -622,10 +622,7 @@ public:
         groupindent.emplace_back( thisIndent );
         indentNum.emplace_back( thisIndent.getQuantity() );
         groupOrderIndent.emplace_back( thisIndent );
-        for (int i = 1; i < 13; ++i) {
-            vector<int> thisMode(1,i);
-            theSelectMode.emplace_back( thisMode );
-        }
+        trySky();
         if ( thisIndent.getArea() > 190000 )
         {
             mergeLarge = true;
@@ -634,6 +631,35 @@ public:
         {
             secondLargeFlag = true;
         }
+    }
+    void trySky()
+    {
+        vector<vector<int>> tmpV;
+        for (int i = 1; i < 13; ++i) {
+            vector<int> thisMode(1,i);
+            tmpV.emplace_back( thisMode );
+        }
+        for (auto thisMode : tmpV )
+        {
+            vector<Item> myItemVector;
+            for (int i = 0; i < thisMode.size(); ++i) {
+                int theNum = thisMode[i];
+                while( theNum-- )
+                {
+                    Item thisItem(std::to_string(groupOrderIndent[i].getIndex()), groupOrderIndent[i].getWidth(), groupOrderIndent[i].getHeight());
+                    myItemVector.emplace_back( thisItem );
+                }
+            }
+            SkyLinePacking skyLinePack(true, 1000 - HORIZONTALSPACING, 700 - VERTICALSPACING, myItemVector );
+            auto thisSolution = skyLinePack.packing();
+            if( thisSolution.getPlaceItemList().size() == myItemVector.size() )
+            {
+                theSelectMode.emplace_back( thisMode );
+            } else
+            {
+                break;
+            }
+         }
     }
     GroupIndent ()
     {
@@ -898,6 +924,10 @@ public:
 
         double printPrice = basePrize + abovePrize * 1000 * (::ceil( thisPrintNum / 1000 ) - 1 );
         double paperPrice = 7000 * totalPaperSize * 350 * 1e-6;
+//        if (paperPrice == 0 )
+//        {
+//            paperPrice = INT64_MAX;
+//        }
         double surfPrice =  ( (0.35 * totalPaperSize) > 250 ) ? (0.35 * totalPaperSize) : 250;
         double biePrice = (( 0.1 * thisPrintNum ) > 150) ? ( 0.1 * thisPrintNum ) : 150 ;
         double dieCutPrice = 200;

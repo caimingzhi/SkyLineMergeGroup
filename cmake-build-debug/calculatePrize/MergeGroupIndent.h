@@ -488,6 +488,8 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
 
     double allWaste = 0;
     int index01 = 0;
+//    std::ofstream  outW( "E:\\code\\testSkyLineInGroup\\workFiles\\waste.csv", std::ios::app);
+
     for( auto & thisGroup : *allGroup )
     {
         index01++;
@@ -496,6 +498,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
             cout << endl;
         }
         auto thefee = thisGroup.getLowestCostBeta();
+//        outW << thefee.first << "," << 1 << endl;
         cout << "第" << index01 << "组成本：" << thefee.first << " ";
         allWaste += thefee.first;
         generatGroup.emplace_back( thefee.second );
@@ -563,7 +566,7 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
         }
         index++;
         auto t2 = ::clock();
-        if ( index == 95 )
+        if ( index == 5 )
         {
             cout << endl;
         }
@@ -619,15 +622,19 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
 
     double allWaste = 0;
     int index01 = 0;
+    std::ofstream  outW( "E:\\code\\testSkyLineInGroup\\workFiles\\waste.csv", std::ios::app);
+
     for( auto & thisGroup : *allGroup )
     {
         index01++;
-        if ( index01 == 95 )
+        if ( index01 == 5 )
         {
             cout << endl;
         }
+
         auto thefee = thisGroup.getLowestCostBeta();
         allWaste += thefee.first;
+        outW << thefee.first << "," << 1 << endl;
         generatGroup.emplace_back( thefee.second );
         vector<int> theNumSequence;
         for (int i = 0; i < thisGroup.groupOrderIndent.size(); ++i) {
