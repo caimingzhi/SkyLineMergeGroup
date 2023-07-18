@@ -11,6 +11,7 @@
 #include <fstream>
 #define HORIZONTALSPACING 12
 #define VERTICALSPACING 15
+#define IND_MAX_WASTE 1000
 #ifndef UNTITLED9_GROUPINDENT_H
 #define UNTITLED9_GROUPINDENT_H
 //class GroupIndent;
@@ -421,7 +422,7 @@ private:
             int countNum = 0;
             for (int j = 0; j < theMode.size(); ++j) {
                 thisModeWateNum += printNum01 * theMode[j] - orderNum[j];
-                if( (printNum01 * theMode[j] - orderNum[j] ) < 1100 )
+                if( (printNum01 * theMode[j] - orderNum[j] ) < IND_MAX_WASTE )
                 {
                     countNum++;
                 }
@@ -621,8 +622,10 @@ public:
         groupindent.emplace_back( thisIndent );
         indentNum.emplace_back( thisIndent.getQuantity() );
         groupOrderIndent.emplace_back( thisIndent );
-        vector<int> theMode({1});
-        theSelectMode.emplace_back( theMode );
+        for (int i = 1; i < 13; ++i) {
+            vector<int> thisMode(1,i);
+            theSelectMode.emplace_back( thisMode );
+        }
         if ( thisIndent.getArea() > 190000 )
         {
             mergeLarge = true;
@@ -655,15 +658,15 @@ public:
     bool merge( RectIndent & thisIndent )
     {
 
-        if ( thisIndent.getArea() > 190000 && mergeLargeSecond )
-        {
-            return false;
-        }
-        if( mergeLarge && thisIndent.getArea() > 50000 )
-        {
-            return false;
-        }
-
+//        if ( thisIndent.getArea() > 190000 && mergeLargeSecond )
+//        {
+//            return false;
+//        }
+//        if( mergeLarge && thisIndent.getArea() > 50000 )
+//        {
+//            return false;
+//        }
+//
 
         if( groupindent.size() == 12 )
         {
@@ -690,19 +693,19 @@ public:
             indentNum.emplace_back(thisIndent.getQuantity() );
             setGroupOrderIndent( tmpMergeGroup );
             setGroupMode( tmpMergeGroup );
-            if ( thisIndent.getArea() > 190000 )
-            {
-                mergeLarge = true;
-//                if( secondLargeFlag )
-//                {
-//                    mergeLargeSecond = true;
-//                }
-            }
+//            if ( thisIndent.getArea() > 190000 )
+//            {
+//                mergeLarge = true;
+////                if( secondLargeFlag )
+////                {
+////                    mergeLargeSecond = true;
+////                }
+//            }
 
-            if ( mergeLarge && thisIndent.getArea() > 50000 )
-            {
-                mergeLargeSecond = true;
-            }
+//            if ( mergeLarge && thisIndent.getArea() > 50000 )
+//            {
+//                mergeLargeSecond = true;
+//            }
 
             return true;
         }

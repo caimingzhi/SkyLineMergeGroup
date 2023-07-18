@@ -491,11 +491,12 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
     for( auto & thisGroup : *allGroup )
     {
         index01++;
-        if ( index01 == 134 )
+        if (index01 == 18 )
         {
             cout << endl;
         }
         auto thefee = thisGroup.getLowestCostBeta();
+        cout << "第" << index01 << "组成本：" << thefee.first << " ";
         allWaste += thefee.first;
         generatGroup.emplace_back( thefee.second );
         vector<int> theNumSequence;
@@ -575,7 +576,6 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
         auto theFee = thisGroup.getGroupAreaBetaplot( thefee.second );
 
     }
-
 
 
     while( !firstGeneration.empty() )
