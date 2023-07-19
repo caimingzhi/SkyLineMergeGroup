@@ -7,6 +7,8 @@
 
 #include "groupIndent.h"
 #include "future"
+#define IND_MAX_WASTE 1
+#define IND_MAX_WASTE_OTHER 1
 #ifndef UNTITLED9_MERGEGROUPINDENT_H
 #define UNTITLED9_MERGEGROUPINDENT_H
 class CountWaste
@@ -66,7 +68,7 @@ double calcWaste( RectIndentPool & myPool , list<int> & firstGeneration )
             {
                 break;
             }
-            if( thisGroup.merge( myPool.indentPool[*iter] ))
+            if( thisGroup.merge( myPool.indentPool[*iter], IND_MAX_WASTE ))
             {
                 iter = firstGeneration.erase( iter );
                 thisGroup.detach( smallestArea );
@@ -113,7 +115,8 @@ double calcWasteBeta( RectIndentPool & myPool , list<int> & firstGeneration )
             {
                 break;
             }
-            if( thisGroup.merge( myPool.indentPool[*iter] ))
+//            if( thisGroup.merge( myPool.indentPool[*iter] , IND_MAX_WASTE_OTHER ))
+            if( thisGroup.mergeGamma( myPool.indentPool[*iter] , IND_MAX_WASTE_OTHER ))
             {
                 iter = firstGeneration.erase( iter );
                 thisGroup.detach( smallestArea );
@@ -165,7 +168,7 @@ void calcWasteGamma( RectIndentPool & myPool , list<int> & firstGeneration , vec
             {
                 break;
             }
-            if( thisGroup.merge( myPool.indentPool[*iter] ))
+            if( thisGroup.merge( myPool.indentPool[*iter], IND_MAX_WASTE))
             {
                 iter = firstGeneration.erase( iter );
                 thisGroup.detach( smallestArea );
@@ -326,7 +329,7 @@ pair<double, vector<vector<int>>> calcWaste1( RectIndentPool & myPool , list<int
             {
                 break;
             }
-            if( thisGroup.merge( myPool.indentPool[*iter]))
+            if( thisGroup.merge( myPool.indentPool[*iter], IND_MAX_WASTE))
             {
                 iter = firstGeneration.erase( iter );
                 thisGroup.detach( smallestArea );
@@ -383,7 +386,8 @@ CountWaste calcWaste2( RectIndentPool & myPool , list<int> & firstGeneration )
             {
                 break;
             }
-            if( thisGroup.merge( myPool.indentPool[*iter]))
+//            if( thisGroup.merge( myPool.indentPool[*iter], IND_MAX_WASTE))
+            if( thisGroup.mergeGamma( myPool.indentPool[*iter], IND_MAX_WASTE))
             {
                 ii++;
 //                cout << " 第 " << ii << "个数加入分组中！" << endl;
@@ -411,10 +415,12 @@ CountWaste calcWaste2( RectIndentPool & myPool , list<int> & firstGeneration )
 
     double allWaste = 0;
     int index01 = 0;
+    plotfileClear();
     for( auto & thisGroup : allGroup )
     {
         index01++;
         auto thefee = thisGroup.getLowestCostBeta();
+        auto theFee = thisGroup.getGroupAreaBetaplot( thefee.second );
         allWaste += thefee.first;
         generatGroup.emplace_back( thefee.second );
         vector<int> theNumSequence;
@@ -443,7 +449,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
 //    cout << " finding time is : " << t2 - t1 << endl;
 //    double smallestEdge = 0;
     list<GroupIndent> allGroup;
-    plotfileClear();
+//    plotfileClear();
     int index = 0;
     while( !firstGeneration.empty() )
     {
@@ -458,7 +464,8 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
             {
                 break;
             }
-            if( thisGroup.merge( myPool.indentPool[*iter]))
+//            if( thisGroup.merge( myPool.indentPool[*iter], IND_MAX_WASTE))
+            if( thisGroup.mergeGamma( myPool.indentPool[*iter], IND_MAX_WASTE))
             {
                 ii++;
 //                cout << " 第 " << ii << "个数加入分组中！" << endl;
@@ -475,7 +482,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
         iter = firstGeneration.begin();
 //        allGroup.push_back( thisGroup );
         allGroup.emplace_back( thisGroup );
-        auto  t2 = ::clock();
+//        auto  t2 = ::clock();
 
 //        cout << " the time of merging a group is : " << t2 - t1 << endl;
 //        cout << " the group size is : " <<  thisGroup.getSize() << endl;
@@ -492,13 +499,13 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
     for( auto & thisGroup : allGroup )
     {
         index01++;
-        if (index01 == 18 )
-        {
-            cout << endl;
-        }
+//        if (index01 == 18 )
+//        {
+//            cout << endl;
+//        }
         auto thefee = thisGroup.getLowestCostBeta();
 //        outW << thefee.first << "," << 1 << endl;
-        cout << "第" << index01 << "组成本：" << thefee.first << " ";
+//        cout << "第" << index01 << "组成本：" << thefee.first << " ";
         allWaste += thefee.first;
         generatGroup.emplace_back( thefee.second );
         vector<int> theNumSequence;
@@ -555,7 +562,7 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
             {
                 break;
             }
-            if ( thisGroup.merge( myPool.indentPool[*iter]))
+            if ( thisGroup.merge( myPool.indentPool[*iter], 0 ))
             {
                 iter = firstGeneration.erase( iter );
                 thisGroup.detach( smallestArea );
@@ -594,7 +601,7 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
             {
                 break;
             }
-            if( thisGroup.merge( myPool.indentPool[*iter]))
+            if( thisGroup.merge( myPool.indentPool[*iter], IND_MAX_WASTE))
             {
                 ii++;
 //                cout << " 第 " << ii << "个数加入分组中！" << endl;

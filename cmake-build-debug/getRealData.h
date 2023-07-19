@@ -9,7 +9,7 @@ using namespace std;
 
 #ifndef TESTSKYLINEINGROUP_GETREALDATA_H
 #define TESTSKYLINEINGROUP_GETREALDATA_H
-vector<vector<int>>  getSimulateData( string theFilePath , int indSize)
+vector<vector<int>>  getSimulateData( string theFilePath , int indSize )
 {
     std::ifstream file( theFilePath, std::ios::in );
     vector<vector<int>> selectPo;
@@ -72,6 +72,10 @@ vector<vector<int>>  getSimulateData( string theFilePath , int indSize)
         }
 
         ii++;
+//        if ( ii > dataSize)
+//        {
+//            break;
+//        }
 //        std::cout << std::endl << " 个数为 ： " << ii << std::endl;
     }
     return selectPo;

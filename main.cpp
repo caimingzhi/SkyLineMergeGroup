@@ -99,33 +99,6 @@ int main() {
 //        countNum[numCount]++;
     }
     cout << " 面积大于175000的个数为： " << ii << endl;
-/*
-//    myPool.indentPool[1].getWidth();
-//    myPool.indentPool[1].getHeight();
-//    vector<Item> myItemVector;
-//    for (int i = 0; i < myPool.indentPool.size(); ++i) {
-//        myItemVector.emplace_back( Item(to_string( i ), myPool.indentPool[i].getWidth(), myPool.indentPool[i].getHeight() ) );
-//    }
-//    SkyLinePacking skyLinePack(true, 1000, 700, myItemVector);
-//    Solution thisSolution = skyLinePack.packing();
-//
-//    cout << endl;
-//    std::ofstream  outw( "E:\\code\\testSkyLineInGroup\\workFiles\\width.txt");
-//    std::ofstream  outh( "E:\\code\\testSkyLineInGroup\\workFiles\\height.txt");
-//    std::ofstream  outx( "E:\\code\\testSkyLineInGroup\\workFiles\\x.txt");
-//    std::ofstream  outy( "E:\\code\\testSkyLineInGroup\\workFiles\\y.txt");
-//
-//    for( auto thisW : thisSolution.getPlaceItemList() )
-//    {
-//        outw << thisW.getW() << endl;
-//        outh << thisW.getH() << endl;
-//        outx << thisW.getX() << endl;
-//        outy << thisW.getY() << endl;
-//
-//    }
-    cout << thisSolution.getRate() << endl;
-
-     */
 
 //    auto tt01 = ::clock();
 ////    auto allMessage = calcWaste3( myPool, individualGroup[1] );
@@ -200,24 +173,44 @@ int main() {
     ThreadPool pool( 10 );
     pool.init();
     auto t1 = ::clock();
-    std::vector<std::future<CountWaste>> wasteP1( individualSize );
-    std::vector<CountWaste> wasteP( individualSize );
+    std::vector<std::future<CountWaste>> wasteP2( individualSize );
+    std::vector<CountWaste> wasteP0( individualSize );
     for (int i = 0; i < individualSize; ++i) {
-        wasteP1[i] = pool.submit(calcWasteTryOtherWay, std::ref(myPool), std::ref(individualGroup[i]) );
+//        wasteP1[i] = pool.submit(calcWasteTryOtherWay, std::ref(myPool), std::ref(individualGroup[i]) );
+        wasteP2[i] = pool.submit(calcWaste3, std::ref(myPool), std::ref(individualGroup[i]) );
 //        wasteP1[i] = pool.submit(calcWasteBeta, std::ref(myPool), std::ref(individualGroup[i]) );
     }
     for (int i = 0; i < individualSize; ++i) {
-         wasteP[i]= wasteP1[i].get();
+         wasteP0[i]= wasteP2[i].get();
     }
 
 //    for_each( wasteP.begin(), wasteP.end(), []( CountWaste a ) { cout << *(a.allGroup)groupRate << " "; } );
     auto t2 = ::clock();
     cout << endl << " the runing time of parent is  " <<  static_cast<double> ( t2 - t1 ) / CLOCKS_PER_SEC  << " seconds. " << endl;
+//    pool.shutdown();
+    individualVector.clear();
+    vector<double> wasteP;
+    for (int i = 0; i < individualSize; ++i) {
+        vector<int> thisNewInd;
+        auto thisGroup = wasteP0[i].allGroup;
+        thisGroup.sort(  compareRate );
+        for( auto & thisInd : thisGroup )
+        {
+            for ( auto & thisPo : thisInd.groupindent ) {
+                thisNewInd.emplace_back( thisPo.getIndex() );
+            }
+        }
+        individualVector.emplace_back(thisNewInd );
+        wasteP.emplace_back( wasteP0[i].waste );
+    }
 
-
-    pool.shutdown();
+//    for (int i = 0; i < individualVector.size(); ++i) {
+//        for ( auto & ind : individualVector[i] ) {
+//            cout << ind << " ";
+//        }
+//        cout << endl;
+//    }
     cout << endl;
-/*
 
 //    cout << endl;
 //    auto t1=clock();
@@ -250,11 +243,12 @@ int main() {
 //
 
 
-
+    std::vector<std::future<double>> wasteP1( individualSize );
 
     vector<double> cumPro = cum_probability( wasteP );
     vector<vector<int>> sonVector;
     auto timebegin = ::clock();
+
     while (sonVector.size() < individualSize )
     {
         vector<int> parentId = chooseParent( cumPro );
@@ -298,8 +292,7 @@ int main() {
     waste.emplace_back( wasteS );
     int parentIndex = 0;
     int sonIndex = 1;
-    int step = 20 ;
-////    cout << "hello" << endl;
+    int step = 100 ;
     while( step-- )
     {
         cout << endl << step << endl;
@@ -311,11 +304,6 @@ int main() {
 
         for_each( nextGenerationWaste.begin(), nextGenerationWaste.end(), []( int a ) { cout << a << " ";});
         cout << endl << " 第" << step << "代最小为 ： "  << static_cast<int> ( *std::min_element(nextGenerationWaste.begin(), nextGenerationWaste.end()) ) << endl;
-
-
-        for_each( nextGenerationWaste.begin(), nextGenerationWaste.end(), []( int a ) { cout << a << " ";});
-        cout << endl;
-
         vector<vector<int>> nextParentVector(individualSize);
         listToVector( nextGeneration, nextParentVector);
         vector<vector<int>> sonVector;
@@ -337,17 +325,17 @@ int main() {
         vector<list<int>> sonGroup( sonVector.size());
         vectorTolist(  sonGroup, sonVector );
         vector<double> wasteS( individualSize );
-        calcuParallel( pool, calcWasteGamma, myPool, sonGroup, wasteS, individualSize );
+//        calcuParallel( pool, calcWasteGamma, myPool, sonGroup, wasteS, individualSize );
 //        calcuParallel( pool, calcWasteDelta, myPool, sonGroup, wasteS, individualSize );
-//        for (int i = 0; i < individualSize; ++i) {
-////            cout << i << "....." ;
-//            wasteP1[i] = pool.submit(calcWasteBeta, std::ref(myPool), std::ref(sonGroup[i]) );
-//        }
-//        cout << endl;
-//        for (int i = 0; i < individualSize; ++i) {
-////            cout << i << "    " ;
-//            wasteS[i]= wasteP1[i].get();
-//        }
+        for (int i = 0; i < individualSize; ++i) {
+//            cout << i << "....." ;
+            wasteP1[i] = pool.submit(calcWasteBeta, std::ref(myPool), std::ref(sonGroup[i]) );
+        }
+        cout << endl;
+        for (int i = 0; i < individualSize; ++i) {
+//            cout << i << "    " ;
+            wasteS[i]= wasteP1[i].get();
+        }
 //        cout << endl;
 //        for( auto & thisSon : sonGroup )
 //        {
@@ -397,8 +385,8 @@ int main() {
             cout << endl;
 //            auto allMessage = calcWasteDeltaPrint( myPool, thisP );
 //            cout << allMessage << endl;
-//            auto allMessage = calcWaste2( myPool, thisP );
-            auto allMessage = calcWaste3( myPool, thisP );
+            auto allMessage = calcWaste2( myPool, thisP );
+//            auto allMessage = calcWasteTryOtherWay( myPool, thisP );
 
             double allWaste = allMessage.waste;
 
@@ -431,9 +419,10 @@ int main() {
 
 
     }
-*/
 
-//    pool.shutdown();
+    pool.shutdown();
+
+
 
     return 0;
 }

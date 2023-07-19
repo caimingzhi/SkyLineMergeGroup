@@ -187,7 +187,7 @@ void mergeG( listMutix<GroupIndent> & allGroup,  List & numberlist , RectIndentP
             }
 
 //            if( thisGroup.tryNext( iter -> data ))
-            if( thisGroup.merge( myPool.indentPool[ iter -> data ]))
+            if( thisGroup.merge( myPool.indentPool[ iter -> data ], 1000))
             {
                 this_lk.release();
                 this_lk = move( next_lk );

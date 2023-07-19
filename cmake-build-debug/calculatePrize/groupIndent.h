@@ -12,7 +12,7 @@
 #include <fstream>
 #define HORIZONTALSPACING 12
 #define VERTICALSPACING 15
-#define IND_MAX_WASTE 1
+
 #ifndef UNTITLED9_GROUPINDENT_H
 #define UNTITLED9_GROUPINDENT_H
 //class GroupIndent;
@@ -186,7 +186,7 @@ public:
     vector<vector<int>> theModeSet;
     vector<RectIndent>  thisGroupIndent;
 
-    MergeClass( bool & mergeFlage, vector<vector<int>> & theMode, vector<RectIndent> & theGroup )
+    MergeClass( bool  mergeFlage, vector<vector<int>> & theMode, vector<RectIndent> & theGroup )
     {
         mergeNumFlag = mergeFlage;
         theModeSet = theMode;
@@ -396,7 +396,7 @@ private:
 
     }
 
-    MergeClass tryNextMode( RectIndent & nextIndent )
+    MergeClass tryNextMode( RectIndent & nextIndent , int allWaste )
     {
         auto groupindentCopy = groupindent;
         groupindentCopy.emplace_back( nextIndent );
@@ -424,7 +424,7 @@ private:
             int countNum = 0;
             for (int j = 0; j < theMode.size(); ++j) {
                 thisModeWateNum += printNum01 * theMode[j] - orderNum[j];
-                if( (printNum01 * theMode[j] - orderNum[j] ) < IND_MAX_WASTE )
+                if( (printNum01 * theMode[j] - orderNum[j] ) < allWaste )
                 {
                     countNum++;
                 }
@@ -466,6 +466,146 @@ private:
             return true;
         }
 
+    }
+
+    void setSeletMode( vector<vector<int>> & theModeMatrixCopy )
+    {
+        if ( !theModeMatrixCopy.empty() )
+        {
+            theSelectMode.clear();
+            for (int k = 0; k < theModeMatrixCopy.size(); ++k) {
+                theSelectMode.emplace_back( theModeMatrixCopy[k] );
+            }
+        }
+    }
+    void  generate( vector<int>  thisMode, int position , vector<vector<int>> & theNexModeMatrix )
+    {
+        int nextNum;
+        if( position == thisMode.size() )
+        {
+            int sum = std::accumulate( thisMode.begin(),thisMode.end(), 0);
+            nextNum = 12 - sum;
+            if ( nextNum <= 0 || nextNum < thisMode.at(position - 1 ) )
+            {
+                return;
+            }
+        } else
+        {
+            nextNum = thisMode.at( position );
+        }
+        position--;
+        int frontNum;
+        if ( (position + 1) == 0 )
+        {
+            frontNum = 1 ;
+            position = 0;
+        } else
+        {
+            frontNum = thisMode.at( position );
+
+        }
+        for (int i = frontNum; i <= nextNum ; ++i) {
+            vector<int> thisModeCopy = thisMode;
+            thisModeCopy.insert( thisModeCopy.begin() + (position+1), i );
+            int textSum = std::accumulate( thisModeCopy.begin(), thisModeCopy.end(), 0 );
+            if( textSum > 12 )
+            {
+                return;
+            }
+            theNexModeMatrix.emplace_back( thisModeCopy );
+//            return;
+        }
+    }
+
+    bool tryOther( RectIndent & nextIndent , int allowWaste)
+    {
+        auto tmpGroup = groupindent;
+        tmpGroup.emplace_back( nextIndent );
+        std::sort(tmpGroup.begin(), tmpGroup.end(), compareRectIndent );
+        auto itr = find( tmpGroup.begin(), tmpGroup.end(), nextIndent);
+        int position = itr - tmpGroup.begin();
+        vector<vector<int>> theNextModeMatrix;
+        for( auto & thisMode : theSelectMode )
+        {
+            generate( thisMode, position, theNextModeMatrix );
+        }
+        if ( !theNextModeMatrix.empty() )
+        {
+            vector<vector<int>> theNextModeMatrixCopy;
+            for( auto & theMode : theNextModeMatrix )
+            {
+                bool overWaste = false;
+                double printNum01 = 0;
+                for (int k = 0; k < theMode.size(); ++k) {
+                    double thisPrintNum = tmpGroup[k].getQuantity() / theMode[k];
+                    if( thisPrintNum > printNum01 )
+                    {
+                        printNum01 = thisPrintNum;
+                    }
+                }
+                double thisModeWateNum = 0;
+                for (int k = 0; k < theMode.size(); ++k) {
+                    thisModeWateNum += printNum01* theMode[k] - tmpGroup[k].getQuantity();
+                    auto diffNum = printNum01* theMode[k] - tmpGroup[k].getQuantity();
+                    if ( diffNum > allowWaste )
+                    {
+                        overWaste = true;
+                        break;
+                    }
+                }
+
+                if ( !overWaste )
+                {
+                    theNextModeMatrixCopy.emplace_back(theMode );
+                }
+            }
+
+            if( !theNextModeMatrixCopy.empty())
+            {
+                MergeClass tmpMerge(true, theNextModeMatrixCopy, tmpGroup );
+                // 天际线检验
+//                cout << "多个开始前  ： " << theNextModeMatrixCopy.size() << endl;
+//                cout << "模的大小是  :" <<  tmpMerge.theModeSet[0].size() << endl;
+                tryNextIndentArea( tmpMerge );
+//                cout << "天际线后    ： " << tmpMerge.theModeSet.size() <<  endl;
+
+                if( tmpMerge.mergeNumFlag )
+                {
+//                    cout << " hello " << endl;
+//                    cout << endl << endl;
+
+                    setSeletMode( tmpMerge.theModeSet );
+                    setGroupOrderIndent( tmpMerge );
+                    groupindent.emplace_back( nextIndent );
+                    indentNum.emplace_back( nextIndent.getQuantity() );
+                    if ( nextIndent.getArea() > 190000 )
+                    {
+                        mergeLarge = true;
+//                if( secondLargeFlag )
+//                {
+//                    mergeLargeSecond = true;
+//                }
+                    }
+
+                    if ( mergeLarge && nextIndent.getArea() > 50000 )
+                    {
+                        mergeLargeSecond = true;
+                    }
+//                    testModeMatrix();
+                    return true;
+                } else
+                {
+                    return false;
+                }
+            } else
+            {
+                return false;
+            }
+
+        } else
+        {
+            return false;
+        }
     }
 
 public:
@@ -629,14 +769,14 @@ public:
         indentNum.emplace_back( thisIndent.getQuantity() );
         groupOrderIndent.emplace_back( thisIndent );
         trySky();
-        if ( thisIndent.getArea() > 190000 )
-        {
-            mergeLarge = true;
-        }
-        if ( thisIndent.getArea() > 50000 )
-        {
-            secondLargeFlag = true;
-        }
+//        if ( thisIndent.getArea() > 190000 )
+//        {
+//            mergeLarge = true;
+//        }
+//        if ( thisIndent.getArea() > 50000 )
+//        {
+//            secondLargeFlag = true;
+//        }
     }
     void trySky()
     {
@@ -681,7 +821,14 @@ public:
         cout << indentNum.size() << endl;
         return indentNum.size();
     }
-
+    int sumtheSelectMode()
+    {
+        int totall = 0;
+        for (int i = 0; i < theSelectMode[0].size(); ++i) {
+            totall += theSelectMode[0][i];
+        }
+        return totall;
+    }
     int theSelectModeFull( )
     {
         int totall = 0;
@@ -691,7 +838,7 @@ public:
         return totall;
     }
 
-    bool merge( RectIndent & thisIndent )
+    bool merge( RectIndent & thisIndent , const int  allowWaste )
     {
 
 //        if ( thisIndent.getArea() > 190000 && mergeLargeSecond )
@@ -717,7 +864,7 @@ public:
         }
 
 
-        auto tmpMergeGroup = tryNextMode( thisIndent );
+        auto tmpMergeGroup = tryNextMode( thisIndent , allowWaste );
         if ( tmpMergeGroup.mergeNumFlag == false )
         {
             return false;
@@ -748,7 +895,15 @@ public:
         return false;
 
     }
-
+    bool mergeGamma( RectIndent & thisIndent, int allowWaste)
+    {
+        if( sumtheSelectMode() == 12 )
+        {
+            mergeFull = true;
+            return false;
+        }
+        return tryOther( thisIndent, allowWaste );
+    }
     double findSmallArea( RectIndentPool & listSample)
     {
         double tmpArea = listSample.indentPool[0].getArea();
