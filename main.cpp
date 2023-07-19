@@ -90,7 +90,7 @@ int main() {
         if ( area > 175000 )
         {
             ii++;
-            cout << myPool.indentPool[i].getHeight() << " " <<  myPool.indentPool[i].getWidth() << endl;
+//            cout << myPool.indentPool[i].getHeight() << " " <<  myPool.indentPool[i].getWidth() << endl;
         }
 //        if ( numCount < 10 )
 //        {
@@ -99,7 +99,6 @@ int main() {
 //        countNum[numCount]++;
     }
     cout << " 面积大于175000的个数为： " << ii << endl;
-    cout << " Hello " << endl;
 /*
 //    myPool.indentPool[1].getWidth();
 //    myPool.indentPool[1].getHeight();
@@ -128,40 +127,59 @@ int main() {
 
      */
 
-    auto tt01 = ::clock();
-//    auto allMessage = calcWaste3( myPool, individualGroup[1] );
-    auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
-    cout << endl << " 指针所指对象的大小为： " << sizeof( *allMessage.allGroup ) << endl;
-    cout << " 指针的大小为： " << sizeof( allMessage.allGroup ) << endl;
-    double allWaste = allMessage.waste;
+//    auto tt01 = ::clock();
+////    auto allMessage = calcWaste3( myPool, individualGroup[1] );
+//    auto allMessage = calcWasteTryOtherWay( myPool, individualGroup[1] );
+//    double totallRate = 0;
+//    for ( auto & thisG : *allMessage.allGroup)
+//    {
+//        cout << thisG.groupRate << " " << endl;
+//        totallRate += thisG.groupRate;
+//    }
+//    cout << "平均拼板利用率为： " << totallRate/((*allMessage.allGroup).size()) << endl;
+//    auto thisGroup = *allMessage.allGroup;
+//    auto tt2 = ::clock();
+//    thisGroup.sort(compareRate);
+//    auto tt3 = ::clock();
+//    cout << "the time of sort in thisGroup is  " << tt3 - tt2 << endl;
+//    cout << endl;
+//    for (int i = 0; i < thisGroup.size(); ++i) {
+//
+//    }
 
-    auto thisGroup = allMessage.thisGroup;
-    for (int i = 0; i < thisGroup.size(); ++i) {
-        cout << " 第" << i + 1 << " 组为：" << endl;
-        for( auto thisG : thisGroup[i] )
-        {
-            cout << thisG << " ";
-        }
-        cout << endl;
-    }
-    cout << endl;
-    auto thisGroupNum = allMessage.thisGroupNum;
-    for (int i = 0; i < thisGroupNum.size(); ++i) {
-        cout << " 第" << i +1 << " 组为：" << endl;
-        for( auto thisG : thisGroupNum[i] )
-        {
-            cout << thisG << " ";
-        }
-        cout << endl;
-    }
 
-    cout << endl;
-    cout << allWaste << endl;
-//    cout << " 分组个数为 ： " << count << endl;
-    auto tt02 = ::clock();
-    cout << " the totall running time is : " << static_cast<double>  ( tt02 - tt01 ) / CLOCKS_PER_SEC << endl;
-    cout << " the totall running time is : " <<  ( tt02 - tt01 )  << endl;
 
+//    cout << endl << " 指针所指对象的大小为： " << sizeof( *allMessage.allGroup ) << endl;
+//    cout << " 指针的大小为： " << sizeof( allMessage.allGroup ) << endl;
+//    double allWaste = allMessage.waste;
+//
+//    auto thisGroup = allMessage.thisGroup;
+//    for (int i = 0; i < thisGroup.size(); ++i) {
+//        cout << " 第" << i + 1 << " 组为：" << endl;
+//        for( auto thisG : thisGroup[i] )
+//        {
+//            cout << thisG << " ";
+//        }
+//        cout << endl;
+//    }
+//    cout << endl;
+//    auto thisGroupNum = allMessage.thisGroupNum;
+//    for (int i = 0; i < thisGroupNum.size(); ++i) {
+//        cout << " 第" << i +1 << " 组为：" << endl;
+//        for( auto thisG : thisGroupNum[i] )
+//        {
+//            cout << thisG << " ";
+//        }
+//        cout << endl;
+//    }
+//
+//    cout << endl;
+//    cout << allWaste << endl;
+////    cout << " 分组个数为 ： " << count << endl;
+//    auto tt02 = ::clock();
+//    cout << " the totall running time is : " << static_cast<double>  ( tt02 - tt01 ) / CLOCKS_PER_SEC << endl;
+//    cout << " the totall running time is : " <<  ( tt02 - tt01 )  << endl;
+//
 
 
 /*    int minRate =  calcWaste2( myPool, individualGroup[0] ).waste;
@@ -178,14 +196,12 @@ int main() {
     }*/
 
 
-/*
 
     ThreadPool pool( 10 );
     pool.init();
-
     auto t1 = ::clock();
-    std::vector<std::future<double>> wasteP1( individualSize );
-    std::vector<double> wasteP( individualSize );
+    std::vector<std::future<CountWaste>> wasteP1( individualSize );
+    std::vector<CountWaste> wasteP( individualSize );
     for (int i = 0; i < individualSize; ++i) {
         wasteP1[i] = pool.submit(calcWasteTryOtherWay, std::ref(myPool), std::ref(individualGroup[i]) );
 //        wasteP1[i] = pool.submit(calcWasteBeta, std::ref(myPool), std::ref(individualGroup[i]) );
@@ -194,14 +210,13 @@ int main() {
          wasteP[i]= wasteP1[i].get();
     }
 
-    for_each( wasteP.begin(), wasteP.end(), []( int a ) { cout << a << " "; } );
+//    for_each( wasteP.begin(), wasteP.end(), []( CountWaste a ) { cout << *(a.allGroup)groupRate << " "; } );
     auto t2 = ::clock();
     cout << endl << " the runing time of parent is  " <<  static_cast<double> ( t2 - t1 ) / CLOCKS_PER_SEC  << " seconds. " << endl;
 
 
     pool.shutdown();
-*/
-
+    cout << endl;
 /*
 
 //    cout << endl;

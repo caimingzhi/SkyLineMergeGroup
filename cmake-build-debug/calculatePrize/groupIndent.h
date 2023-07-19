@@ -6,6 +6,7 @@
 #include<cmath>
 #include<mylib/ModeSet.h>
 #include<mylib/calculatePrize/OpenMachineFee.h>
+#include "E:\code\testSkyLineInGroup\cmake-build-debug\calculatePrize\OpenMachineFee.h"
 #include<mylib/calculatePrize/basePlate.h>
 #include<E:\code\skyLine\cmake-build-debug\SkyLine.h>
 #include <fstream>
@@ -71,7 +72,7 @@ pair<int, int> balancePoint(  vector<Item> & myItemVector )
             if ( maxRate < thisSolution.getRate() )
             {
                 double width = aa ;
-                double height = skyLinePack.getLargestY();
+                double height = skyLinePack.getLargestY() + VERTICALSPACING;
                 if(  myItemVector.size() == 1 )
                 {
                     maxRate = thisSolution.getRate();
@@ -83,13 +84,13 @@ pair<int, int> balancePoint(  vector<Item> & myItemVector )
                 {
                     maxRate = thisSolution.getRate();
                     width1 = aa;
-                    height1 = skyLinePack.getLargestY();
+                    height1 = skyLinePack.getLargestY() + VERTICALSPACING;
                 }
                 if ( height > width && height < width * 2 )
                 {
                     maxRate = thisSolution.getRate();
                     width1 = aa;
-                    height1 = skyLinePack.getLargestY();
+                    height1 = skyLinePack.getLargestY() + VERTICALSPACING;
                 }
             }
         } else
@@ -176,6 +177,7 @@ bool compareRectIndent ( RectIndent &a , RectIndent & b )
     }
 }
 
+
 class MergeClass
 {
 public:
@@ -231,8 +233,8 @@ private:
     double getGroupArea( const vector<int> & thisMode )
     {
         double totallArea = 0;
-        for (int i = 0; i < groupindent.size(); ++i) {
-            totallArea += thisMode[i]*groupindent[i].getArea();
+        for (int i = 0; i < groupOrderIndent.size(); ++i) {
+            totallArea += thisMode[i]*groupOrderIndent[i].getArea();
         }
         return totallArea;
     }
@@ -609,6 +611,10 @@ public:
     vector<vector<int>> theSelectMode;
     vector<RectIndent> groupOrderIndent;
     vector<int> indentNum;
+    double plateWidth;
+    double plateHight;
+    double groupArea;
+    double groupRate;
     bool mergeFull = false;
     bool mergeLarge = false;
     bool mergeLargeSecond = false;
@@ -666,6 +672,10 @@ public:
 
     }
 
+    double getRate() const
+    {
+        return groupRate;
+    }
     int getSize()
     {
         cout << indentNum.size() << endl;
@@ -854,7 +864,7 @@ public:
         double totallPrice = printPrice + paperPrice + surfPrice + biePrice + dieCutPrice + nianPriceTotall;
 //        cout << "总价： " << totallPrice << " 面积：" << max << " " << min << " 数量：" << thisPrintNum-losePaper << " 宽: " << width << " 高： " << height <<
 //        " paperPrice ： " << paperPrice << " surfPrice： " << surfPrice << endl;
-        OpenMachineFee thisFee( printPrice, paperPrice, surfPrice, biePrice, dieCutPrice, nianPriceTotall, totallPrice);
+        OpenMachineFee thisFee( printPrice, paperPrice, surfPrice, biePrice, dieCutPrice, nianPriceTotall, totallPrice, max, min);
         return thisFee;
 
     }
@@ -943,7 +953,7 @@ public:
         double totallPrice = printPrice + paperPrice + surfPrice + biePrice + dieCutPrice + nianPriceTotall;
 //        cout << "总价： " << totallPrice << " 面积：" << max << " " << min << " 数量：" << thisPrintNum-losePaper << " 宽: " << width << " 高： " << height <<
 //        " paperPrice ： " << paperPrice << " surfPrice： " << surfPrice << endl;
-        OpenMachineFee thisFee( printPrice, paperPrice, surfPrice, biePrice, dieCutPrice, nianPriceTotall, totallPrice);
+        OpenMachineFee thisFee( printPrice, paperPrice, surfPrice, biePrice, dieCutPrice, nianPriceTotall, totallPrice, max, min);
         return thisFee;
 
     }
@@ -956,6 +966,10 @@ public:
         auto firstV = *(thismodeset.begin());
         OpenMachineFee thisFee = getFlatPrizeBeta( firstV );
         double theFee = thisFee.totallPrice;
+        plateWidth = thisFee.getWidth();
+        plateHight = thisFee.getHeight();
+        groupArea = getGroupArea(firstV);
+        groupRate = groupArea/(plateHight*plateWidth);
         vector<int> theMode( (thismodeset.begin())->size(), 1);
         if( theSelectMode.size() == 1 )
         {
@@ -969,6 +983,10 @@ public:
             if( theFee >= otherFee.totallPrice )
             {
                 theFee = otherFee.totallPrice;
+                plateWidth = otherFee.getWidth();
+                plateHight = otherFee.getHeight();
+                groupArea = getGroupArea(thisMode);
+                groupRate = groupArea/(plateHight*plateWidth);
                 for (int i = 0; i < theMode.size(); ++i) {
                     theMode[i] = thisMode[i];
                 }
@@ -1004,4 +1022,8 @@ public:
     }
 };
 
+
+bool compareRate(const GroupIndent & a, const GroupIndent & b) {
+    return a.getRate() > b.getRate();
+}
 #endif //UNTITLED9_GROUPINDENT_H

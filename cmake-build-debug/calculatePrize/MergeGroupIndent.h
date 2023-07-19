@@ -15,18 +15,17 @@ public:
     double waste;
     vector<vector<int>> thisGroup;
     vector<vector<int>> thisGroupNum;
-    list<GroupIndent> * allGroup;
-    CountWaste( double waste, vector<vector<int>> & thisGroup, vector<vector<int>> & thisGroupNum, list<GroupIndent> * allGrooup )
+    list<GroupIndent> allGroup;
+    CountWaste( double waste, vector<vector<int>> & thisGroup, vector<vector<int>> & thisGroupNum, list<GroupIndent> allGrooup )
     {
         this -> waste = waste;
         this -> thisGroup = thisGroup;
         this -> thisGroupNum = thisGroupNum;
         this -> allGroup = allGrooup;
     }
-    ~CountWaste()
-    {
-        delete allGroup;
-    }
+    CountWaste(){};
+
+    ~CountWaste(){};
 
 };
 
@@ -368,7 +367,7 @@ CountWaste calcWaste2( RectIndentPool & myPool , list<int> & firstGeneration )
 //    auto t2 = ::clock();
 //    cout << " finding time is : " << t2 - t1 << endl;
 //    double smallestEdge = 0;
-    list<GroupIndent> * allGroup = new list<GroupIndent>();
+    list<GroupIndent> allGroup;
     plotfileClear();
     int index = 0;
     while( !firstGeneration.empty() )
@@ -400,7 +399,7 @@ CountWaste calcWaste2( RectIndentPool & myPool , list<int> & firstGeneration )
 //        cout << " 这是第 " << index << " 组！！" << endl;
         iter = firstGeneration.begin();
 //        allGroup.push_back( thisGroup );
-        allGroup -> emplace_back( thisGroup );
+        allGroup.emplace_back( thisGroup );
         auto  t2 = ::clock();
 //        cout << " the time of merging a group is : " << t2 - t1 << endl;
 //        cout << " the group size is : " <<  thisGroup.getSize() << endl;
@@ -412,7 +411,7 @@ CountWaste calcWaste2( RectIndentPool & myPool , list<int> & firstGeneration )
 
     double allWaste = 0;
     int index01 = 0;
-    for( auto & thisGroup : *allGroup )
+    for( auto & thisGroup : allGroup )
     {
         index01++;
         auto thefee = thisGroup.getLowestCostBeta();
@@ -443,7 +442,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
 //    auto t2 = ::clock();
 //    cout << " finding time is : " << t2 - t1 << endl;
 //    double smallestEdge = 0;
-    list<GroupIndent> * allGroup = new list<GroupIndent>();
+    list<GroupIndent> allGroup;
     plotfileClear();
     int index = 0;
     while( !firstGeneration.empty() )
@@ -475,7 +474,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
 //        cout << " 这是第 " << index << " 组！！" << endl;
         iter = firstGeneration.begin();
 //        allGroup.push_back( thisGroup );
-        allGroup ->emplace_back( thisGroup );
+        allGroup.emplace_back( thisGroup );
         auto  t2 = ::clock();
 
 //        cout << " the time of merging a group is : " << t2 - t1 << endl;
@@ -490,7 +489,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
     int index01 = 0;
 //    std::ofstream  outW( "E:\\code\\testSkyLineInGroup\\workFiles\\waste.csv", std::ios::app);
 
-    for( auto & thisGroup : *allGroup )
+    for( auto & thisGroup : allGroup )
     {
         index01++;
         if (index01 == 18 )
@@ -525,7 +524,8 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
     double smallestArea = theGroup.findSmallArea( myPool );
 
     //合成包含较大的组
-    list<GroupIndent> * allGroup = new list<GroupIndent>();
+//    list<GroupIndent> * allGroup = new list<GroupIndent>();
+    list<GroupIndent> allGroup;
     unique_ptr<vector<GroupIndent>> largeGroup = make_unique<vector<GroupIndent>>( );
     plotfileClear();
     int ii = 0;
@@ -574,7 +574,7 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
         cout << " the time of merging a group is : " << t2 - t1 << endl;
         cout << " the group size is : " <<  thisGroup.getSize() << endl;
         iter = firstGeneration.begin();
-        allGroup -> emplace_back( thisGroup );
+        allGroup.emplace_back( thisGroup );
         auto thefee = thisGroup.getLowestCostBeta();
         auto theFee = thisGroup.getGroupAreaBetaplot( thefee.second );
 
@@ -610,7 +610,7 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
         cout << " 这是第 " << index << " 组！！" << endl;
         iter = firstGeneration.begin();
 //        allGroup.push_back( thisGroup );
-        allGroup -> emplace_back( thisGroup );
+        allGroup.emplace_back( thisGroup );
         auto  t2 = ::clock();
         cout << " the time of merging a group is : " << t2 - t1 << endl;
         cout << " the group size is : " <<  thisGroup.getSize() << endl;
@@ -624,7 +624,7 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
     int index01 = 0;
     std::ofstream  outW( "E:\\code\\testSkyLineInGroup\\workFiles\\waste.csv", std::ios::app);
 
-    for( auto & thisGroup : *allGroup )
+    for( auto & thisGroup : allGroup )
     {
         index01++;
         if ( index01 == 5 )

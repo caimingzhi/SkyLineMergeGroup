@@ -14,9 +14,11 @@ public:
     double dieCutPrice;
     double nianPriceTotall;
     double totallPrice;
+    double width;
+    double height;
 
     OpenMachineFee( double printP, double paperP, double surfP,
-                    double bieP, double dieCutP, double nianPt, double totalP )
+                    double bieP, double dieCutP, double nianPt, double totalP, double W , double H  )
     {
         printPrince = printP;
         paperPrice = paperP;
@@ -25,6 +27,8 @@ public:
         dieCutPrice = dieCutP;
         nianPriceTotall = nianPt;
         totallPrice = totalP;
+        width = W;
+        height = H;
     }
     void setPrintPrice ( double printP)
     {
@@ -57,6 +61,14 @@ public:
     void setTotalPrice( double totalP)
     {
         totallPrice = totalP;
+    }
+    double getHeight()
+    {
+        return height;
+    }
+    double getWidth()
+    {
+        return width;
     }
 
 };
