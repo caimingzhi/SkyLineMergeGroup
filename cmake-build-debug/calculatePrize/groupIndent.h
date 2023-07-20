@@ -1181,4 +1181,7 @@ public:
 bool compareRate(const GroupIndent & a, const GroupIndent & b) {
     return a.getRate() > b.getRate();
 }
+
+
+
 #endif //UNTITLED9_GROUPINDENT_H

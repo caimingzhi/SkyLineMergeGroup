@@ -210,7 +210,6 @@ int main() {
 //        }
 //        cout << endl;
 //    }
-    cout << endl;
 
 //    cout << endl;
 //    auto t1=clock();
@@ -292,7 +291,7 @@ int main() {
     waste.emplace_back( wasteS );
     int parentIndex = 0;
     int sonIndex = 1;
-    int step = 100 ;
+    int step = 500 ;
     while( step-- )
     {
         cout << endl << step << endl;
@@ -360,14 +359,10 @@ int main() {
             parentIndex = 0;
             sonIndex = 1;
         }
-
-
         if( step == 0 )
         {
             auto minElement = std::min_element( nextGenerationWaste.begin(), nextGenerationWaste.end() );
             int minIndex = std::distance(nextGenerationWaste.begin(), minElement );
-
-
             std::sort(nextGenerationWaste.begin(), nextGenerationWaste.end());
             cout << nextGenerationWaste.front() << endl;
             double aa = nextGenerationWaste.front();
@@ -389,7 +384,11 @@ int main() {
 //            auto allMessage = calcWasteTryOtherWay( myPool, thisP );
 
             double allWaste = allMessage.waste;
-
+            for ( auto & thisG : allMessage.allGroup)
+            {
+                cout << thisG.groupRate << " " << endl;
+            }
+            cout << endl;
             auto thisGroup = allMessage.thisGroup;
             for (int i = 0; i < thisGroup.size(); ++i) {
                 for( auto thisG : thisGroup[i] )
@@ -414,9 +413,6 @@ int main() {
             for_each(sonVector[1].begin(), sonVector[1].end(), [] ( int a ) { cout << a << " ";});
 
         }
-
-
-
 
     }
 
