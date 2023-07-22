@@ -169,6 +169,7 @@ int main() {
     }*/
 
 
+/*
 
     ThreadPool pool( 10 );
     pool.init();
@@ -291,7 +292,7 @@ int main() {
     waste.emplace_back( wasteS );
     int parentIndex = 0;
     int sonIndex = 1;
-    int step = 500 ;
+    int step = 60 ;
     while( step-- )
     {
         cout << endl << step << endl;
@@ -411,12 +412,11 @@ int main() {
             cout << endl;
             cout << allWaste << endl;
             for_each(sonVector[1].begin(), sonVector[1].end(), [] ( int a ) { cout << a << " ";});
-
         }
-
     }
 
     pool.shutdown();
+*/
 
 
 
