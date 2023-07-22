@@ -1179,6 +1179,13 @@ public:
 
 
 bool compareRate(const GroupIndent & a, const GroupIndent & b) {
+//    if ( a.indentNum.size() < 3 and b.indentNum.size() < 3 )
+//    {
+//        return a.getRate() > b.getRate();
+//    } else
+//    {
+//
+//    }
     return a.getRate() > b.getRate();
 }
 
