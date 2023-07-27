@@ -21,11 +21,11 @@ vector<vector<int>>  getSimulateData( string theFilePath , int indSize )
     }
     std::vector<std::vector<std::string>> data;
     std::string line;
+    int index = 0;
     while ( std::getline( file, line ))
     {
         std::vector<std::string> row;
         std::string cell;
-
         for( char c : line )
         {
             if ( c != ',' )
@@ -47,18 +47,18 @@ vector<vector<int>>  getSimulateData( string theFilePath , int indSize )
     {
         int width = std::stoi( row[1] );
         int height = std::stoi( row[2] );
-        if ( width < 80 || height < 80 )
-        {
-            continue;
-        }
-        if ( width > 988 || height > 988 )
-        {
-            continue;
-        }
-        if( height > 685 && width > 685 )
-        {
-            continue;
-        }
+//        if ( width < 80 || height < 80 )
+//        {
+//            continue;
+//        }
+//        if ( width > 988 || height > 988 )
+//        {
+//            continue;
+//        }
+//        if( height > 685 && width > 685 )
+//        {
+//            continue;
+//        }
         vector<int> thisPo;
         for ( const auto & cell : row )
         {

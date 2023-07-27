@@ -15,7 +15,6 @@
 
 #ifndef UNTITLED9_GROUPINDENT_H
 #define UNTITLED9_GROUPINDENT_H
-//class GroupIndent;
 
 pair<int, int> balancePoint(  vector<Item> & myItemVector )
 {
@@ -23,47 +22,9 @@ pair<int, int> balancePoint(  vector<Item> & myItemVector )
     double maxRate = 0;
     int width1 = 0;
     int height1 = 0;
-
-/*    const vector<vector<double>> PaperBackPapers
-            {
-                    { 392, 364 },
-                    { 398, 295 },
-                    { 443, 298 },
-                    { 443, 398 },
-                    { 545, 392 },
-                    { 595, 295 },
-                    { 595, 443 },
-                    { 787, 364 },
-                    { 787, 545 },
-                    { 887, 398 },
-                    { 887, 595 },
-                    { 1000, 700 }
-            };
-    int bleed = 3;
-    int levelCut = 12 + bleed * 2 ;
-    int verticalCut = 15 + bleed * 2 ;
-
-    for( auto iter = PaperBackPapers.begin(); iter != PaperBackPapers.end() ; ++iter )
-    {
-//        cout << " 长宽分别为：+++ " <<  (*iter)[0] - verticalCut << " " <<  (*iter)[1] - verticalCut << endl;
-        SkyLinePacking skyLinePack(true, (*iter)[0] - levelCut, (*iter)[1] - verticalCut, myItemVector );
-        auto thisSolution = skyLinePack.packing();
-        if( thisSolution.getPlaceItemList().size() == myItemVector.size() )
-        {
-            if ( maxRate < thisSolution.getRate() )
-            {
-                maxRate = thisSolution.getRate();
-//                cout << " 利用率为： " << maxRate << endl;
-                width = (*iter)[0];
-//                height = skyLinePack.getLargestY();
-                height = (*iter)[1];
-                break;
-//                cout << " the width and height are : " << width << " " << height << endl;
-            }
-        }
-    }*/
-
-    while( aa >= 260 )
+    double width;
+    double height;
+    while( aa > 0 )
     {
         SkyLinePacking skyLinePack(true, aa , 700 - VERTICALSPACING, myItemVector );
         auto thisSolution = skyLinePack.packing();
@@ -71,8 +32,8 @@ pair<int, int> balancePoint(  vector<Item> & myItemVector )
         {
             if ( maxRate < thisSolution.getRate() )
             {
-                double width = aa ;
-                double height = skyLinePack.getLargestY() + VERTICALSPACING;
+                width = aa ;
+                height = skyLinePack.getLargestY();
                 if(  myItemVector.size() == 1 )
                 {
                     maxRate = thisSolution.getRate();
@@ -84,13 +45,13 @@ pair<int, int> balancePoint(  vector<Item> & myItemVector )
                 {
                     maxRate = thisSolution.getRate();
                     width1 = aa;
-                    height1 = skyLinePack.getLargestY() + VERTICALSPACING;
+                    height1 = skyLinePack.getLargestY();
                 }
                 if ( height > width && height < width * 2 )
                 {
                     maxRate = thisSolution.getRate();
                     width1 = aa;
-                    height1 = skyLinePack.getLargestY() + VERTICALSPACING;
+                    height1 = skyLinePack.getLargestY();
                 }
             }
         } else
@@ -99,72 +60,21 @@ pair<int, int> balancePoint(  vector<Item> & myItemVector )
         }
         aa -= 10;
     }
-//        cout << "  天际线最优结果宽： " <<  width1 << " " << " 高： " <<  height1 << endl;
+
+    if ( width1 == 0 )
+    {
+        width1 = width;
+        height1 = height;
+    }
 
     SkyLinePacking skyLinePack(true, width1, height1, myItemVector );
     auto thisSolution = skyLinePack.packing();
+
 //    cout << " the used rate is : " <<  thisSolution.getRate() << endl;
-//    double theRate = thisSolution.getRate();
-//    if ( width < height )
-//    {
-//        int a = width;
-//        width = height;
-//        height = a;
-//    }
+
     pair<int, int> thisPair{ width1, height1 };
     return thisPair;
 }
-
-//bool testAreaSense(  vector<Item> & myItemVector )
-//{
-//    double maxRate = 0;
-//    int width = 0;
-//    int height = 0;
-//
-//    const vector<vector<double>> PaperBackPapers
-//            {
-//                    { 392, 364 },
-//                    { 398, 295 },
-//                    { 443, 298 },
-//                    { 443, 398 },
-//                    { 545, 392 },
-//                    { 595, 295 },
-//                    { 595, 443 },
-//                    { 787, 364 },
-//                    { 787, 545 },
-//                    { 887, 398 },
-//                    { 887, 595 },
-//                    { 1000, 700 }
-//            };
-//    int bleed = 3;
-//    int levelCut = 12 + bleed * 2 ;
-//    int verticalCut = 15 + bleed * 2 ;
-//    for( auto iter = PaperBackPapers.begin(); iter != PaperBackPapers.end() ; ++iter )
-//    {
-////        cout << " 长宽分别为：+++ " <<  (*iter)[0] - verticalCut << " " <<  (*iter)[1] - verticalCut << endl;
-//        SkyLinePacking skyLinePack(true, (*iter)[0] - levelCut, (*iter)[1] - verticalCut, myItemVector );
-//        auto thisSolution = skyLinePack.packing();
-//        if( thisSolution.getPlaceItemList().size() == myItemVector.size() )
-//        {
-//            if ( maxRate < thisSolution.getRate() )
-//            {
-//                maxRate = thisSolution.getRate();
-////                cout << " 利用率为： " << maxRate << endl;
-//                width = (*iter)[0];
-//                height = skyLinePack.getLargestY();
-//                if ( width < height * 2 )
-//                {
-//                    return true;
-//                } else
-//                {
-//                    return false;
-//                }
-//            }
-//        }
-//    }
-//    return false;
-//
-//}
 
 bool compareRectIndent ( RectIndent &a , RectIndent & b )
 {
@@ -176,8 +86,6 @@ bool compareRectIndent ( RectIndent &a , RectIndent & b )
         return false;
     }
 }
-
-
 class MergeClass
 {
 public:
@@ -213,8 +121,6 @@ public:
         lowestSkyLine = skyline;
     }
 };
-
-
 class GroupIndent
 {
 private:
@@ -262,79 +168,25 @@ private:
                 myItemVector.emplace_back( thisItem );
             }
         }
-
-/*
-        double width = 758;
-        double hight = 700;
-        double max = width;
-        double min = hight;
-        SkyLinePacking skyLinePack(true, width, hight, myItemVector );
-        auto thisSolution = skyLinePack.packing();
-        if( thisSolution.getPlaceItemList().size() == myItemVector.size() )
-        {
-            min = skyLinePack.getLargestY();
-            max = width;
-
-//            std::ofstream  outw( "E:\\code\\testSkyLineInGroup\\workFiles\\width.txt");
-//            std::ofstream  outh( "E:\\code\\testSkyLineInGroup\\workFiles\\height.txt");
-//            std::ofstream  outx( "E:\\code\\testSkyLineInGroup\\workFiles\\x.txt");
-//            std::ofstream  outy( "E:\\code\\testSkyLineInGroup\\workFiles\\y.txt");
-//
-//            for( auto thisW : thisSolution.getPlaceItemList() )
-//            {
-//                outw << thisW.getW() << endl;
-//                outh << thisW.getH() << endl;
-//                outx << thisW.getX() << endl;
-//                outy << thisW.getY() << endl;
-//
-//            }
-            cout << thisSolution.getRate() << endl;
-
-            double theRate = thisSolution.getRate();
-            if( theRate <= 0.7 )
-            {
-                cout << endl;
-            }
-
-        } else
-        {
-            width = 1000;
-            hight = 700;
-            SkyLinePacking skyLinePack(true, width, hight, myItemVector );
-            auto thisSolution = skyLinePack.packing();
-            min = skyLinePack.getLargestY();
-            max = width;
-
-//            std::ofstream  outw( "E:\\code\\testSkyLineInGroup\\workFiles\\width.txt");
-//            std::ofstream  outh( "E:\\code\\testSkyLineInGroup\\workFiles\\height.txt");
-//            std::ofstream  outx( "E:\\code\\testSkyLineInGroup\\workFiles\\x.txt");
-//            std::ofstream  outy( "E:\\code\\testSkyLineInGroup\\workFiles\\y.txt");
-//
-//            for( auto thisW : thisSolution.getPlaceItemList() )
-//            {
-//                outw << thisW.getW() << endl;
-//                outh << thisW.getH() << endl;
-//                outx << thisW.getX() << endl;
-//                outy << thisW.getY() << endl;
-//
-//            }
-            cout << thisSolution.getRate() << endl;
-        }
-        pair<double, double> t1( min, max);
-*/
-
-
         auto thisPair = balancePoint( myItemVector );
         double min = 0;
         double max = 0;
         if( thisPair.first > thisPair.second )
         {
             max = thisPair.first;
-            min = thisPair.second;
+            min = thisPair.second + HORIZONTALSPACING;
         } else
         {
-            max = thisPair.second;
+            max = thisPair.second + HORIZONTALSPACING;
             min = thisPair.first;
+        }
+        if ( max < 260 )
+        {
+            max = 260;
+        }
+        if ( min < 260 )
+        {
+            min = 260;
         }
         pair<double, double> t1( max, min );
 
@@ -445,7 +297,6 @@ private:
     bool placeNextMerge( RectIndent & nextIndent )
     {
         vector<Item> myItemVector;
-//        vector<int> theIndexSeq;
         for (int i = 0; i < groupindent.size(); ++i) {
             int theNum = 1;
             while( theNum-- )
@@ -559,21 +410,12 @@ private:
                     theNextModeMatrixCopy.emplace_back(theMode );
                 }
             }
-
             if( !theNextModeMatrixCopy.empty())
             {
                 MergeClass tmpMerge(true, theNextModeMatrixCopy, tmpGroup );
-                // 天际线检验
-//                cout << "多个开始前  ： " << theNextModeMatrixCopy.size() << endl;
-//                cout << "模的大小是  :" <<  tmpMerge.theModeSet[0].size() << endl;
                 tryNextIndentArea( tmpMerge );
-//                cout << "天际线后    ： " << tmpMerge.theModeSet.size() <<  endl;
-
                 if( tmpMerge.mergeNumFlag )
                 {
-//                    cout << " hello " << endl;
-//                    cout << endl << endl;
-
                     setSeletMode( tmpMerge.theModeSet );
                     setGroupOrderIndent( tmpMerge );
                     groupindent.emplace_back( nextIndent );
@@ -581,17 +423,12 @@ private:
                     if ( nextIndent.getArea() > 190000 )
                     {
                         mergeLarge = true;
-//                if( secondLargeFlag )
-//                {
-//                    mergeLargeSecond = true;
-//                }
                     }
 
                     if ( mergeLarge && nextIndent.getArea() > 50000 )
                     {
                         mergeLargeSecond = true;
                     }
-//                    testModeMatrix();
                     return true;
                 } else
                 {
@@ -611,9 +448,6 @@ private:
 public:
     pair<double, double> getGroupAreaBetaplot( const vector<int> & thisMode )
     {
-//        ModeSet thisSet( indentNum.size() + 1 );
-//        auto & thismodeset = thisSet.modeSet;
-
         vector<Item> myItemVector;
         for (int i = 0; i < thisMode.size(); ++i) {
             int theNum = thisMode[i];
@@ -666,81 +500,6 @@ public:
         outn << "-1" << endl;
         outq << "-1" << endl;
 
-/*
-        double width = 700;
-        double hight = 758;
-        double max = width;
-        double min = hight;
-        SkyLinePacking skyLinePack(true, width, hight, myItemVector );
-        Solution thisSolution = skyLinePack.packing();
-        if( thisSolution.getPlaceItemList().size() == myItemVector.size() )
-        {
-            min = skyLinePack.getLargestY();
-            max = width;
-//
-*/
-/*            if( thisSolution.getPlaceItemList().size() == myItemVector.size() )
-            {
-                std::ofstream  outw( "E:\\code\\testSkyLineInGroup\\workFiles\\width.txt");
-                std::ofstream  outh( "E:\\code\\testSkyLineInGroup\\workFiles\\height.txt");
-                std::ofstream  outx( "E:\\code\\testSkyLineInGroup\\workFiles\\x.txt");
-                std::ofstream  outy( "E:\\code\\testSkyLineInGroup\\workFiles\\y.txt");
-
-                for( auto thisW : thisSolution.getPlaceItemList() )
-                {
-                    outw << thisW.getW() << endl;
-                    outh << thisW.getH() << endl;
-                    outx << thisW.getX() << endl;
-                    outy << thisW.getY() << endl;
-
-                }
-                cout <<  thisSolution.getPlaceItemList().size() << " " <<  myItemVector.size() << endl;
-            }*//*
-
-        } else
-        {
-            width = 1000;
-            hight = 700;
-            SkyLinePacking skyLinePack(true, width, hight, myItemVector );
-            auto thisSolution = skyLinePack.packing();
-            if( thisSolution.getPlaceItemList().size() != myItemVector.size() )
-            {
-                cout << endl << " something wrong !!! " << endl;
-            }
-
-
-            if( thisSolution.getPlaceItemList().size() == myItemVector.size() )
-            {
-//            auto thisSolution = skyLinePack.packing();
-//            cout << thisSolution.getRate() << endl;
-
-                std::ofstream  outw( "E:\\code\\testSkyLineInGroup\\workFiles\\width.txt");
-                std::ofstream  outh( "E:\\code\\testSkyLineInGroup\\workFiles\\height.txt");
-                std::ofstream  outx( "E:\\code\\testSkyLineInGroup\\workFiles\\x.txt");
-                std::ofstream  outy( "E:\\code\\testSkyLineInGroup\\workFiles\\y.txt");
-
-                for( auto thisW : thisSolution.getPlaceItemList() )
-                {
-                    outw << thisW.getW() << endl;
-                    outh << thisW.getH() << endl;
-                    outx << thisW.getX() << endl;
-                    outy << thisW.getY() << endl;
-
-                }
-//            cout <<  thisSolution.getPlaceItemList().size() << " " <<  myItemVector.size() << endl;
-            }
-
-            min = skyLinePack.getLargestY();
-            max = width;
-        }
-
-//        SkyLinePacking skyLinePack(true, 1000, 700, myItemVector );
-//        auto thisSolution = skyLinePack.packing();
-
-//        cout << thisSolution.getRate() << endl;
-//        double min = skyLinePack.getLargestY();
-//        double max = 1000;
-        pair<double, double> t1( min, max);*/
         return t1;
     }
 
@@ -769,14 +528,6 @@ public:
         indentNum.emplace_back( thisIndent.getQuantity() );
         groupOrderIndent.emplace_back( thisIndent );
         trySky();
-//        if ( thisIndent.getArea() > 190000 )
-//        {
-//            mergeLarge = true;
-//        }
-//        if ( thisIndent.getArea() > 50000 )
-//        {
-//            secondLargeFlag = true;
-//        }
     }
     void trySky()
     {
@@ -1066,7 +817,6 @@ public:
 //        double totallArea = getGroupArea(thisMode );
 //        double height = getHight( totallArea );
 //        double width = getWidth( totallArea );
-
         pair<double, double> thisPir = getGroupAreaBeta( thisMode );
         double width = thisPir.first;
         double height = thisPir.second;
@@ -1078,21 +828,14 @@ public:
         BasePlate thisbaseplate ;
         double max = properSize(width, height, thisbaseplate.cuttingPaper ).first;
         double min = properSize(width, height, thisbaseplate.cuttingPaper ).second;
-//        double max = width;
-//        double min = height;
         if( chooseFour(max, min, thisbaseplate.fourMachineSize) )
         {
-//            cout << " choose four " << endl;
             basePrize = 230;
             abovePrize = 0.05;
         }
 
         double printPrice = basePrize + abovePrize * 1000 * (::ceil( thisPrintNum / 1000 ) - 1 );
         double paperPrice = 7000 * totalPaperSize * 350 * 1e-6;
-//        if (paperPrice == 0 )
-//        {
-//            paperPrice = INT64_MAX;
-//        }
         double surfPrice =  ( (0.35 * totalPaperSize) > 250 ) ? (0.35 * totalPaperSize) : 250;
         double biePrice = (( 0.1 * thisPrintNum ) > 150) ? ( 0.1 * thisPrintNum ) : 150 ;
         double dieCutPrice = 200;
@@ -1113,7 +856,7 @@ public:
 
     }
 
-    pair<double, vector<int>> getLowestCostBeta(  )
+    pair<double, vector<int>> getLowestCostBeta( )
     {
 //        ModeSet thisSet( indentNum.size() );
 //        auto & thismodeset = thisSet.modeSet;
@@ -1128,7 +871,6 @@ public:
         vector<int> theMode( (thismodeset.begin())->size(), 1);
         if( theSelectMode.size() == 1 )
         {
-//            cout << theSelectMode.size() << endl;
             return pair<double, vector<int>> { theFee, *theSelectMode.begin()};
         }
 
@@ -1176,16 +918,7 @@ public:
         }
     }
 };
-
-
 bool compareRate(const GroupIndent & a, const GroupIndent & b) {
-//    if ( a.indentNum.size() < 3 and b.indentNum.size() < 3 )
-//    {
-//        return a.getRate() > b.getRate();
-//    } else
-//    {
-//
-//    }
     return a.getRate() > b.getRate();
 }
 

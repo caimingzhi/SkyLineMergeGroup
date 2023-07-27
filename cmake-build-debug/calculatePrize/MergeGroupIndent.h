@@ -108,7 +108,7 @@ double calcWasteBeta( RectIndentPool & myPool , list<int> & firstGeneration )
     {
         GroupIndent thisGroup( myPool.indentPool[*iter]);
         iter = firstGeneration.erase(iter);
-        auto t1 = ::clock();
+//        auto t1 = ::clock();
         for( ; iter != firstGeneration.end(); )
         {
             if( thisGroup.mergeFull )
@@ -128,7 +128,7 @@ double calcWasteBeta( RectIndentPool & myPool , list<int> & firstGeneration )
         }
         iter = firstGeneration.begin();
         allGroup.push_back( thisGroup );
-        auto t2 = ::clock();
+//        auto t2 = ::clock();
 //        timeTotall += t2 - t1;
 //        cout << " the time of merging a group is : " << t2 - t1 << endl;
 //        cout << " the group size is : " <<  thisGroup.getSize() << endl;
@@ -459,7 +459,10 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
         int ii = 1;
         for( ; iter != firstGeneration.end(); )
         {
-//            cout << " 序号为： " <<  myPool.indentPool[*iter].getIndex() << endl;
+
+//            cout << " 序号为： " <<  myPool.indentPool[*iter].getIndex() + 1 << endl;
+//            if ( myPool.indentPool[*iter].getIndex() == 194 )
+//                cout << " index 194 " << endl;
             if( thisGroup.mergeFull )
             {
                 break;
@@ -486,7 +489,7 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
 
 //        cout << " the time of merging a group is : " << t2 - t1 << endl;
 //        cout << " the group size is : " <<  thisGroup.getSize() << endl;
-//        auto thefee = thisGroup.getLowestCostBeta();
+        auto thefee = thisGroup.getLowestCostBeta();
 //        auto theFee = thisGroup.getGroupAreaBetaplot( thefee.second );
 //        cout << " ----- " << endl;
 
@@ -499,10 +502,6 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
     for( auto & thisGroup : allGroup )
     {
         index01++;
-//        if (index01 == 18 )
-//        {
-//            cout << endl;
-//        }
         auto thefee = thisGroup.getLowestCostBeta();
 //        outW << thefee.first << "," << 1 << endl;
 //        cout << "第" << index01 << "组成本：" << thefee.first << " ";
@@ -516,7 +515,6 @@ CountWaste calcWaste3( RectIndentPool & myPool , list<int> & firstGeneration )
     }
 
     CountWaste thisCountWaste( allWaste, generatGroup, generatGroupNum , allGroup);
-
     return  thisCountWaste;
 
 }
@@ -573,10 +571,6 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
         }
         index++;
         auto t2 = ::clock();
-        if ( index == 5 )
-        {
-            cout << endl;
-        }
         cout << " 这是第 " << index << " 组！！" << endl;
         cout << " the time of merging a group is : " << t2 - t1 << endl;
         cout << " the group size is : " <<  thisGroup.getSize() << endl;
@@ -634,10 +628,6 @@ CountWaste calcWasteTryOtherWay( RectIndentPool & myPool , list<int> & firstGene
     for( auto & thisGroup : allGroup )
     {
         index01++;
-        if ( index01 == 5 )
-        {
-            cout << endl;
-        }
 
         auto thefee = thisGroup.getLowestCostBeta();
         allWaste += thefee.first;

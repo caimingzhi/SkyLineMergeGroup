@@ -57,19 +57,8 @@ void getList( vector<list<int>> & thisList )
 
 
 int main() {
-//    int totall1 = 0;
-//    int totall = 0;
-//    for (int i = 2; i < 12 ; ++i) {
-//        ModeSetOrder thisSet(i );
-//        totall1 += thisSet.modeSet.size();
-//        ModeSet thisSet1(7 );
-//        totall += thisSet1.modeSet.size();
-//    }
-//    cout << "this message was changed from github" << endl;
-//    cout << totall << endl;
-//    cout << totall1 << endl;
-//    cout << static_cast<double > (totall/totall1) << endl;
-    int baseSize = 1000 ;
+
+    int baseSize = 3000 ;
     const int individualSize = 50;
     int seed = 1235;
     vector<list<int>> individualGroup( individualSize );
@@ -92,9 +81,8 @@ int main() {
             ii++;
         }
     }
+    cout << " 面积大于175000的个数为： " << ii << endl;
 
-
-//    cout << " 面积大于175000的个数为： " << ii << endl;
 //
 //    auto tt01 = ::clock();
 //    auto allMessage = calcWaste3( myPool, individualGroup[1] );
@@ -117,18 +105,54 @@ int main() {
 
 
 
-/*    int minRate =  calcWaste2( myPool, individualGroup[0] ).waste;
-    for (int i = 1; i < individualSize; ++i) {
-        auto allMessage = calcWaste2( myPool, individualGroup[i] );
-        if ( minRate > allMessage.waste )
-        {
-            minRate = allMessage.waste;
-            cout << "Holaholooooooooooo!!!!!" << endl;
-            cout << " in the time of  " << i << ", the lesser waste is : " << minRate << endl;
-        }
-        int waste = allMessage.waste;
-        cout << waste << endl;
-    }*/
+//    int minRate =  calcWaste2( myPool, individualGroup[0] ).waste;
+//    for (int i = 1; i < individualSize; ++i) {
+//        auto allMessage = calcWaste2( myPool, individualGroup[i] );
+//        if ( minRate > allMessage.waste )
+//        {
+//            minRate = allMessage.waste;
+//            cout << "Holaholooooooooooo!!!!!" << endl;
+//            cout << " in the time of  " << i << ", the lesser waste is : " << minRate << endl;
+//        }
+//        int waste = allMessage.waste;
+//        cout << waste << endl;
+//    }
+
+// C:\Users\Admin\Desktop\test01.txt
+
+ /*   std::ifstream file( "C:\\Users\\Admin\\Desktop\\test01.txt", std::ios::in );
+    list<int> poSequence;
+    if ( !file.is_open())
+    {
+        std::cout << " Please check the address, can't open the file!! " << std::endl;
+        terminate();
+    }
+    string line;
+    while(getline(file, line))
+    {
+        int thisIndex = stoi( line );
+        thisIndex -= 1;
+        poSequence.emplace_back( thisIndex );
+    }
+
+    auto t1 = ::clock();
+    auto thisWaste = calcWaste3( myPool, poSequence );
+    auto t2 = ::clock();
+    cout << t2 - t1 << endl;
+    cout << thisWaste.waste << endl;*/
+
+//    auto thisGroup = thisWaste.allGroup;
+//    int numSkip = 0;
+//    for ( auto & thisG : thisGroup )
+//    {
+//        numSkip++;
+//        cout << " --- " << numSkip << endl;
+//        for ( auto thisg : thisG.groupindent ) {
+//            cout << thisg.getIndex() + 1 << endl;
+//
+//        }
+//        cout << endl;
+//    }
 
 
 
@@ -165,43 +189,6 @@ int main() {
         individualVector.emplace_back(thisNewInd );
         wasteP.emplace_back( wasteP0[i].waste );
     }
-
-//    for (int i = 0; i < individualVector.size(); ++i) {
-//        for ( auto & ind : individualVector[i] ) {
-//            cout << ind << " ";
-//        }
-//        cout << endl;
-//    }
-
-//    cout << endl;
-//    auto t1=clock();
-//    int numThread = 5;
-//    cout << " the number of thread is : " << numThread << endl;
-//    ThreadPool pool( numThread );
-//    pool.init();
-//    ThreadPool poolList( 50 );
-//    poolList.init();
-//    ThreadPool * thisPool = & poolList;
-////    cout << endl << " the thread id in the main funtion is : " << this_thread::get_id() << endl;
-////    double * p = new double[ individualSize ];
-//    auto t3 = ::clock();
-////    calcuParallel( pool, calcWasteGamma, myPool, individualGroup, wasteP, individualSize );
-//    std::vector<std::future<double>> wasteP1( individualSize );
-//    std::vector<double> wasteP( individualSize );
-//    for (int i = 0; i < individualSize; ++i) {
-//        wasteP1[i] = pool.submit(calcWasteDelta, std::ref(myPool), std::ref(individualGroup[i]), std::ref( thisPool) );
-//    }
-//    for (int i = 0; i < individualSize; ++i) {
-//        wasteP[i]= wasteP1[i].get();
-//    }
-
-//    auto t4 = ::clock();
-//    cout << endl << " the runing time of parent is  " <<  static_cast<double> ( t4 - t3 ) / CLOCKS_PER_SEC  << " seconds. " << endl;
-//    for_each( wasteP.begin(), wasteP.end(), []( int a ) { cout << a << " "; } );
-//
-//    pool.shutdown();
-//    thisPool-> shutdown();
-//
 
 
     std::vector<std::future<double>> wasteP1( individualSize );
@@ -253,10 +240,11 @@ int main() {
     waste.emplace_back( wasteS );
     int parentIndex = 0;
     int sonIndex = 1;
-    int step = 1 ;
+    int step = 100 ;
+    int totallStep = step;
     while( step-- )
     {
-        cout << endl << step << endl;
+        cout << endl << totallStep - step << endl;
         vector<list<int>> nextGeneration;
         vector<double> nextGenerationWaste;
         topRankIndividual( nextGeneration, population[parentIndex], population[sonIndex], nextGenerationWaste, waste[parentIndex], waste[sonIndex], individualSize );
@@ -264,7 +252,7 @@ int main() {
 //        printAverage( nextGenerationWaste );
 
         for_each( nextGenerationWaste.begin(), nextGenerationWaste.end(), []( int a ) { cout << a << " ";});
-        cout << endl << " 第" << step << "代最小为 ： "  << static_cast<int> ( *std::min_element(nextGenerationWaste.begin(), nextGenerationWaste.end()) ) << endl;
+        cout << endl << " 第" << totallStep - step << "代最小为 ： "  << static_cast<int> ( *std::min_element(nextGenerationWaste.begin(), nextGenerationWaste.end()) ) << endl;
         vector<vector<int>> nextParentVector(individualSize);
         listToVector( nextGeneration, nextParentVector);
         vector<vector<int>> sonVector;
@@ -289,21 +277,12 @@ int main() {
 //        calcuParallel( pool, calcWasteGamma, myPool, sonGroup, wasteS, individualSize );
 //        calcuParallel( pool, calcWasteDelta, myPool, sonGroup, wasteS, individualSize );
         for (int i = 0; i < individualSize; ++i) {
-//            cout << i << "....." ;
             wasteP1[i] = pool.submit(calcWasteBeta, std::ref(myPool), std::ref(sonGroup[i]) );
         }
         cout << endl;
         for (int i = 0; i < individualSize; ++i) {
-//            cout << i << "    " ;
             wasteS[i]= wasteP1[i].get();
         }
-//        cout << endl;
-//        for( auto & thisSon : sonGroup )
-//        {
-//            double allWaste = calcWasteBeta( myPool, thisSon ) ;
-//            wasteS.emplace_back( allWaste );
-//        }
-
 
         vector<list<int>> parentGroup( nextParentVector.size() );
         vectorTolist( parentGroup, nextParentVector );
@@ -348,7 +327,8 @@ int main() {
             double allWaste = allMessage.waste;
             for ( auto & thisG : allMessage.allGroup)
             {
-                cout << thisG.groupRate << " " << endl;
+                cout << thisG.groupRate << " " << thisG.indentNum.size() <<  endl;
+//                cout << thisG.indentNum.size() << endl;
             }
             cout << endl;
             auto thisGroup = allMessage.thisGroup;
